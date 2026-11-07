@@ -1,6 +1,8 @@
 # 🚗 MAM Tours - Car Rental Management System
 
-A modern Laravel-based car rental management system with integrated payment processing, automated notifications, and admin dashboard.
+A Laravel-based car rental management system intended to support booking, payments, notifications, and administration.
+
+> **Repository status:** The current GitHub snapshot is incomplete. It does not contain the Laravel application source directories (`app/`, `bootstrap/`, `routes/`, `database/`, or `resources/`) or the test suite. Restore the complete application before following the setup or deployment steps below.
 
 ## 🚀 Features
 
@@ -97,7 +99,7 @@ Visit: http://127.0.0.1:8000
    APP_NAME=MAM Tours
    APP_ENV=production
    APP_DEBUG=false
-   APP_KEY=base64:KKmN0zpxMoDU1DkQa8ByHyZ/UD0b3+EoeKrJ3uRaktg=
+   # Generate a unique key with `php artisan key:generate --show`; store it only in Railway variables
    APP_URL=${{RAILWAY_PUBLIC_DOMAIN}}
    
    DB_CONNECTION=mysql
@@ -177,6 +179,8 @@ mam-tours-laravel/
 
 ## 🧪 Testing
 
+The current repository snapshot does not include a test suite. Restore the application source and tests before relying on these commands.
+
 ```bash
 # Run all tests
 php artisan test
@@ -188,13 +192,9 @@ php artisan test --testsuite=Feature
 php artisan test --coverage
 ```
 
-## 📝 Default Admin Account
+## Admin Account
 
-After seeding:
-- **Email**: admin@mamtours.com
-- **Password**: password
-
-**⚠️ Change this in production!**
+Do not rely on a shared or default admin password. Create the first administrator using a secure, project-specific setup process, and require a unique password before enabling production access.
 
 ## 🔐 Security Features
 
