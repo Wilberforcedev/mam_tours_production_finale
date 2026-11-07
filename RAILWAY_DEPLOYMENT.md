@@ -1,6 +1,8 @@
 # 🚂 Railway Deployment Guide for MAM Tours
 
-## ✅ Pre-Deployment Checklist (Already Done!)
+## Pre-Deployment Checklist
+
+**Repository status:** This repository snapshot is missing the Laravel application source (including `app/`, `bootstrap/`, `routes/`, `database/`, and `resources/`). Restore those project files before attempting deployment; the current snapshot cannot run Artisan commands.
 
 I've created these files for you:
 - ✅ `Procfile` - Tells Railway how to start your app
@@ -63,7 +65,7 @@ Click on your web service → **"Variables"** tab → Add these variables:
 APP_NAME=MAM Tours
 APP_ENV=production
 APP_DEBUG=false
-APP_KEY=base64:KKmN0zpxMoDU1DkQa8ByHyZ/UD0b3+EoeKrJ3uRaktg=
+# Generate a unique key with `php artisan key:generate --show` and store it only as a Railway secret
 APP_URL=${{RAILWAY_PUBLIC_DOMAIN}}
 
 # Database (Railway auto-fills these from MySQL service)
@@ -150,21 +152,17 @@ If migrations didn't run, you can run them manually:
 2. Under **"Deploy"**, find **"Custom Start Command"**
 3. It should already have: `php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT`
 
-### Step 9: Seed Your Database (Optional)
+### Step 9: Seed Data Safely (Optional)
 
-To add initial data:
+**Never run `php artisan migrate:fresh` against a persistent or production database.** It drops all existing tables and data.
 
-1. In Railway dashboard, click your service
-2. Go to **"Settings"** → **"Deploy"**
-3. Temporarily change start command to:
-   ```bash
-   php artisan migrate:fresh --seed --force && php artisan serve --host=0.0.0.0 --port=$PORT
-   ```
-4. Click **"Deploy"** to redeploy
-5. After seeding completes, change back to:
-   ```bash
-   php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT
-   ```
+For production, apply schema changes with:
+
+```bash
+php artisan migrate --force
+```
+
+Only seed a production database after reviewing the seeder code and confirming that it is safe to run repeatedly. Prefer running seeders against a local or disposable staging database. Take and verify a database backup before any production data change.
 
 ### Step 10: Test Your Application
 
