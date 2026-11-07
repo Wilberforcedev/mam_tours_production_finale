@@ -139,18 +139,13 @@ Railway automatically deploys when you:
 
 ### Step 8: Run Database Migrations
 
-After first deployment:
+After the application has deployed and the database backup is confirmed, run migrations once for that release using Railway's deployment command or shell:
 
-1. Go to your web service
-2. Click **"Deployments"** tab
-3. Click on the latest deployment
-4. Click **"View Logs"**
-5. Check if migrations ran successfully
+```bash
+php artisan migrate --force
+```
 
-If migrations didn't run, you can run them manually:
-1. Click on your service → **"Settings"**
-2. Under **"Deploy"**, find **"Custom Start Command"**
-3. It should already have: `php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT`
+Do not put migrations in the web server start command. Review each migration and confirm it is compatible with the existing production schema before applying it.
 
 ### Step 9: Seed Data Safely (Optional)
 
