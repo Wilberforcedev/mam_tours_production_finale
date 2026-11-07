@@ -1,348 +1,46 @@
-# 🚂 Railway Deployment Guide for MAM Tours
+# Production readiness and Railway deployment
 
-## Pre-Deployment Checklist
+## Current status: blocked
 
-**Repository status:** This repository snapshot is missing the Laravel application source (including `app/`, `bootstrap/`, `routes/`, `database/`, and `resources/`). Restore those project files before attempting deployment; the current snapshot cannot run Artisan commands.
+This repository is not a deployable Laravel application. The current Git tree contains the Composer and frontend manifests plus deployment documentation, but no application source:
 
-I've created these files for you:
-- ✅ `Procfile` - Tells Railway how to start your app
-- ✅ `nixpacks.toml` - Build configuration
-- ✅ `.railwayignore` - Files to exclude from deployment
+- `app/`
+- `bootstrap/app.php`
+- `routes/`
+- `database/migrations/`
+- `resources/`
+- `public/index.php`
+- application tests
 
-## 🚀 Deployment Steps
+The build configuration deliberately stops when the required Laravel source is missing. Keep that guard in place. Restore the real application from a trusted backup or the correct repository before attempting deployment. The earlier Git commit does not contain the missing source either.
 
-### Step 1: Push Your Code to GitHub
+## Security actions required
 
-If you haven't already, initialize Git and push to GitHub:
+The committed `.env` file has been removed from the current snapshot, but it remains in Git history. Treat every real value it contained as exposed:
 
-```bash
-# Initialize git (if not already done)
-git init
+1. Rotate the Laravel `APP_KEY` and any real payment, database, mail, SMS, or cloud credentials in their respective provider dashboards.
+2. Store replacement values only as Railway service variables or another secrets manager. Never commit `.env` or credentials.
+3. Coordinate any Git history rewrite with collaborators after rotation. Rewriting history does not replace rotating the secrets.
 
-# Add all files
-git add .
+## Framework upgrade required
 
-# Commit
-git commit -m "Prepare for Railway deployment"
+The manifest currently pins Laravel 8. The Laravel support table lists its security-fix end date as 24 January 2023. Do not launch this version as a new production service. After restoring the application source, upgrade it to a supported Laravel release and compatible PHP/dependency versions, resolving and testing breaking changes in stages.
 
-# Add your GitHub repository as remote
-git remote add origin https://github.com/YOUR_USERNAME/mam-tours-laravel.git
+See the [Laravel release support policy](https://laravel.com/framework/docs/8.x/releases).
 
-# Push to GitHub
-git push -u origin main
-```
+## Steps after the application source is restored
 
-**Note**: If your default branch is `master`, use `master` instead of `main`.
+1. **Reconcile the project.** Confirm `composer.json`, `composer.lock`, PHP version, extensions, frontend dependencies, migrations, and deployment settings match the restored code.
+2. **Build and test before deployment.** Run Composer and npm installs from the lock files, build assets, run the application test suite, and fix static-analysis and security-audit findings. Add CI so these checks run before deployment. The current snapshot has no application tests.
+3. **Configure secrets in Railway.** Set `APP_ENV=production`, `APP_DEBUG=false`, `APP_KEY`, the production `APP_URL`, and the database, mail, and payment variables actually required by the restored code. Use Railway's private database reference variables where appropriate. Do not use example values.
+4. **Use a production web server.** Route web requests to Laravel's `public/index.php` only. Confirm Railway's current Railpack build plan and start command; do not assume the existing `nixpacks.toml` or `Procfile` is being applied as intended. Laravel's documented web-server configuration uses the `public/` directory as the document root.
+5. **Run migrations as a pre-deploy operation.** Review the migrations and verify a restorable database backup first. Use Railway's pre-deploy command for reviewed migrations, for example `php artisan migrate --force`. Do not put migrations in the web-server start command. Never run `migrate:fresh` against a persistent database.
+6. **Configure runtime needs.** Decide how sessions, cache, queues, scheduled tasks, uploaded files, and logs will work across restarts and multiple instances. Use durable storage or object storage for user uploads; do not rely on an ephemeral container filesystem.
+7. **Add readiness and recovery checks.** Implement a health endpoint that returns a success response only when the app can serve traffic; configure Railway's health check against it. Test database backup restoration and rollback procedures in staging.
+8. **Deploy to staging first.** Exercise registration, authentication, booking, payment callbacks, notifications, admin access, and error handling using test credentials. Review logs and security settings before any production launch.
 
-### Step 2: Sign Up for Railway
+Railway runs pre-deploy commands before the new version goes live and supports health checks; configure these only after the application and health endpoint exist. See [Railway pre-deploy commands](https://docs.railway.com/deployments/pre-deploy-command) and [Railway health checks](https://docs.railway.com/deployments/healthchecks).
 
-1. Go to https://railway.app
-2. Click **"Login"** or **"Start a New Project"**
-3. Sign in with your **GitHub account**
-4. Authorize Railway to access your repositories
+## Do not deploy this snapshot
 
-### Step 3: Create New Project
-
-1. Click **"New Project"**
-2. Select **"Deploy from GitHub repo"**
-3. Choose **"mam-tours-laravel"** (or your repository name)
-4. Railway will automatically detect it's a Laravel app
-
-### Step 4: Add MySQL Database
-
-1. In your project dashboard, click **"New"**
-2. Select **"Database"**
-3. Choose **"Add MySQL"**
-4. Railway automatically creates the database and connects it
-
-### Step 5: Configure Environment Variables
-
-Click on your web service → **"Variables"** tab → Add these variables:
-
-#### Required Variables:
-
-```env
-APP_NAME=MAM Tours
-APP_ENV=production
-APP_DEBUG=false
-# Generate a unique key with `php artisan key:generate --show` and store it only as a Railway secret
-APP_URL=${{RAILWAY_PUBLIC_DOMAIN}}
-
-# Database (Railway auto-fills these from MySQL service)
-DB_CONNECTION=mysql
-DB_HOST=${{MYSQL_HOST}}
-DB_PORT=${{MYSQL_PORT}}
-DB_DATABASE=${{MYSQL_DATABASE}}
-DB_USERNAME=${{MYSQL_USER}}
-DB_PASSWORD=${{MYSQL_PASSWORD}}
-
-# Session & Cache
-SESSION_DRIVER=file
-CACHE_DRIVER=file
-QUEUE_CONNECTION=sync
-
-# Mail Configuration (use your settings)
-MAIL_MAILER=smtp
-MAIL_HOST=smtp.mailtrap.io
-MAIL_PORT=2525
-MAIL_USERNAME=null
-MAIL_PASSWORD=null
-MAIL_ENCRYPTION=null
-MAIL_FROM_ADDRESS=noreply@mamtours.com
-MAIL_FROM_NAME="${APP_NAME}"
-MAIL_ADMIN_EMAIL=admin@mamtours.com
-
-# Payment Configuration (add your keys later)
-STRIPE_KEY=pk_test_your_key_here
-STRIPE_SECRET=sk_test_your_key_here
-STRIPE_WEBHOOK_SECRET=whsec_your_webhook_here
-
-# SMS Configuration (optional, add later)
-TWILIO_ACCOUNT_SID=your_sid
-TWILIO_AUTH_TOKEN=your_token
-TWILIO_PHONE_NUMBER=your_number
-
-# Security Settings
-SANCTUM_STATEFUL_DOMAINS=localhost:8000,127.0.0.1:8000
-SESSION_SECURE_COOKIE=true
-SESSION_SAME_SITE=lax
-
-# Activity Logging
-ACTIVITY_LOG_ENABLED=true
-```
-
-**Important**: Railway automatically provides these variables when you add MySQL:
-- `MYSQL_HOST`
-- `MYSQL_PORT`
-- `MYSQL_DATABASE`
-- `MYSQL_USER`
-- `MYSQL_PASSWORD`
-
-Just reference them using `${{MYSQL_HOST}}` syntax.
-
-### Step 6: Generate Public Domain
-
-1. Go to your web service → **"Settings"**
-2. Scroll to **"Networking"**
-3. Click **"Generate Domain"**
-4. Railway will give you a URL like: `https://mam-tours-production.up.railway.app`
-5. Copy this URL and update `APP_URL` variable with it
-
-### Step 7: Deploy!
-
-Railway automatically deploys when you:
-- Push to GitHub
-- Change environment variables
-- Click "Deploy" button
-
-**First deployment takes 3-5 minutes.**
-
-### Step 8: Run Database Migrations
-
-After the application has deployed and the database backup is confirmed, run migrations once for that release using Railway's deployment command or shell:
-
-```bash
-php artisan migrate --force
-```
-
-Do not put migrations in the web server start command. Review each migration and confirm it is compatible with the existing production schema before applying it.
-
-### Step 9: Seed Data Safely (Optional)
-
-**Never run `php artisan migrate:fresh` against a persistent or production database.** It drops all existing tables and data.
-
-For production, apply schema changes with:
-
-```bash
-php artisan migrate --force
-```
-
-Only seed a production database after reviewing the seeder code and confirming that it is safe to run repeatedly. Prefer running seeders against a local or disposable staging database. Take and verify a database backup before any production data change.
-
-### Step 10: Test Your Application
-
-1. Visit your Railway domain (e.g., `https://mam-tours-production.up.railway.app`)
-2. Test key features:
-   - ✅ Home page loads
-   - ✅ Registration works
-   - ✅ Login works
-   - ✅ Booking system works
-   - ✅ Admin panel accessible
-
----
-
-## 🔧 Post-Deployment Configuration
-
-### 1. Configure Payment Keys
-
-Once you have real Stripe keys:
-1. Go to Variables tab
-2. Update `STRIPE_KEY`, `STRIPE_SECRET`, `STRIPE_WEBHOOK_SECRET`
-3. Railway auto-redeploys
-
-### 2. Set Up Email
-
-For production emails:
-1. Sign up for Mailgun (free: 5000 emails/month)
-2. Get SMTP credentials
-3. Update mail variables in Railway
-4. Test email notifications
-
-### 3. Set Up SMS (Optional)
-
-For SMS notifications:
-1. Sign up for Twilio or Africa's Talking
-2. Get API credentials
-3. Update SMS variables in Railway
-4. Test SMS notifications
-
-### 4. Configure Custom Domain (Optional)
-
-To use your own domain:
-1. Go to service → **"Settings"** → **"Networking"**
-2. Click **"Custom Domain"**
-3. Add your domain (e.g., `mamtours.com`)
-4. Update DNS records as instructed
-5. Railway provides free SSL automatically
-
----
-
-## 📊 Monitoring Your Application
-
-### View Logs:
-1. Click your service
-2. Go to **"Deployments"** tab
-3. Click on any deployment
-4. View real-time logs
-
-### Check Metrics:
-1. Click your service
-2. Go to **"Metrics"** tab
-3. See CPU, Memory, Network usage
-
-### Database Access:
-1. Click on MySQL service
-2. Go to **"Data"** tab
-3. View/edit database directly
-4. Or use **"Connect"** to get connection string for external tools
-
----
-
-## 🔄 Updating Your Application
-
-After making changes locally:
-
-```bash
-# Commit changes
-git add .
-git commit -m "Your update message"
-
-# Push to GitHub
-git push origin main
-```
-
-Railway automatically detects the push and redeploys! ✨
-
----
-
-## 💰 Free Tier Limits
-
-Railway free tier includes:
-- **$5 credit per month**
-- **500 hours of usage**
-- **100GB bandwidth**
-- **Unlimited projects**
-
-This is usually enough for:
-- Development/testing
-- Small production apps
-- 100-500 active users
-
-### When to Upgrade:
-
-Upgrade to paid tier ($5/month) when:
-- You exceed free credits
-- Need 24/7 uptime (no sleep)
-- Have more than 500 users
-- Need better performance
-
----
-
-## 🆘 Troubleshooting
-
-### Issue: "Application Error" or 500 Error
-
-**Solution**:
-1. Check logs in Railway dashboard
-2. Common causes:
-   - Missing environment variables
-   - Database connection issues
-   - Missing `APP_KEY`
-3. Verify all variables are set correctly
-
-### Issue: Database Connection Failed
-
-**Solution**:
-1. Make sure MySQL service is running
-2. Check database variables are using `${{MYSQL_*}}` syntax
-3. Verify `DB_CONNECTION=mysql` is set
-
-### Issue: Assets Not Loading (CSS/JS)
-
-**Solution**:
-1. Make sure `npm run build` ran successfully
-2. Check build logs for errors
-3. Verify `public` folder is not in `.gitignore`
-
-### Issue: Migrations Not Running
-
-**Solution**:
-1. Check start command includes `php artisan migrate --force`
-2. View deployment logs for migration errors
-3. Manually run migrations if needed
-
-### Issue: App Sleeps After Inactivity
-
-**Solution**:
-- This is normal on free tier
-- App wakes up on first request (takes 10-30 seconds)
-- Upgrade to paid tier for 24/7 uptime
-- Or use a service like UptimeRobot to ping your app every 5 minutes
-
----
-
-## ✅ Success Checklist
-
-After deployment, verify:
-
-- [ ] Application loads at Railway URL
-- [ ] Database is connected and working
-- [ ] User registration works
-- [ ] Login/logout works
-- [ ] Booking system functional
-- [ ] Admin panel accessible
-- [ ] Images and assets load correctly
-- [ ] Forms submit successfully
-- [ ] Email notifications configured (if needed)
-- [ ] Payment system configured (if needed)
-
----
-
-## 🎉 You're Live!
-
-Once deployed, your MAM Tours application will be accessible at:
-`https://your-app-name.up.railway.app`
-
-Share this URL with users to start testing!
-
----
-
-## 📞 Need Help?
-
-If you encounter any issues:
-1. Check Railway logs first
-2. Review this guide
-3. Check Railway documentation: https://docs.railway.app
-4. Ask me for help!
-
-**Your application is ready for Railway deployment!** 🚀
+Until the Laravel source is restored, the framework is upgraded, exposed credentials are rotated, and staging checks pass, this repository is not production ready.
