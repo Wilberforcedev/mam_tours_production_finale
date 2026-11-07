@@ -1,231 +1,26 @@
-# 🚗 MAM Tours - Car Rental Management System
+# MAM Tours
 
-A Laravel-based car rental management system intended to support booking, payments, notifications, and administration.
+MAM Tours is intended to be a Laravel car-rental management application.
 
-> **Repository status:** The current GitHub snapshot is incomplete. It does not contain the Laravel application source directories (`app/`, `bootstrap/`, `routes/`, `database/`, or `resources/`) or the test suite. Restore the complete application before following the setup or deployment steps below.
+## Repository status: not production ready
 
-## 🚀 Features
+The current repository snapshot contains dependency manifests and deployment scaffolding, but it does **not** contain the Laravel application source or test suite. Missing items include `app/`, `bootstrap/app.php`, `routes/`, `database/migrations/`, `resources/`, and `public/index.php`. The required application code is not present in the earlier Git commit either.
 
-- **User Management**: Registration, login, profile management, KYC verification
-- **Booking System**: Real-time car availability, booking management, pricing calculation
-- **Payment Integration**: Stripe (credit/debit cards) and Mobile Money (MTN/Airtel)
-- **Admin Dashboard**: Manage bookings, cars, users, KYC verifications, and reviews
-- **Automated Notifications**: Email/SMS reminders for payments, pickups, returns
-- **Review System**: Customer reviews and ratings
-- **Invoice Generation**: Professional PDF invoices
+The Railway build guard is expected to fail until the actual application source is restored from a trusted backup or the correct repository. Do not deploy this snapshot.
 
-## 📋 Requirements
+## Security notice
 
-- PHP 7.3 or higher
-- MySQL 5.7 or higher
-- Composer
-- Node.js & NPM
+A populated `.env` file was committed previously and has since been removed from the current tree. Its contents remain in Git history. Rotate any real credentials it contained—including the application key and payment or messaging credentials—at the relevant providers. Put replacement secrets in Railway variables or a secrets manager; do not commit them. Coordinate any Git history rewrite after rotating the secrets.
 
-## 🛠️ Local Development Setup
+## Framework status
 
-### 1. Clone and Install Dependencies
+`composer.json` currently requires Laravel 8. Laravel's official support table lists the end of security fixes for Laravel 8 as 24 January 2023. Restore the source, then upgrade the framework and its dependencies to supported, compatible versions before production.
 
-```bash
-# Install PHP dependencies
-composer install
+- [Laravel 8 release and support policy](https://laravel.com/framework/docs/8.x/releases)
+- [Laravel 8 deployment guidance](https://laravel.com/framework/docs/8.x/deployment)
 
-# Install Node dependencies
-npm install
+## Railway deployment
 
-# Build frontend assets
-npm run build
-```
+See [RAILWAY_DEPLOYMENT.md](RAILWAY_DEPLOYMENT.md) for the current blocker, credential actions, and the deployment checklist to follow after restoring the application.
 
-### 2. Configure Environment
-
-```bash
-# Copy environment file
-cp .env.example .env
-
-# Generate application key
-php artisan key:generate
-
-# Configure database in .env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=mam_tours
-DB_USERNAME=root
-DB_PASSWORD=
-```
-
-### 3. Run Migrations
-
-```bash
-php artisan migrate
-```
-
-### 4. Seed Database (Optional)
-
-```bash
-php artisan db:seed
-```
-
-### 5. Start Development Server
-
-```bash
-php artisan serve
-```
-
-Visit: http://127.0.0.1:8000
-
-## 🚂 Railway Deployment
-
-### Quick Deploy
-
-1. **Push to GitHub**
-   ```bash
-   git add .
-   git commit -m "Deploy to Railway"
-   git push origin main
-   ```
-
-2. **Deploy on Railway**
-   - Go to https://railway.app
-   - Sign in with GitHub
-   - Click "New Project" → "Deploy from GitHub repo"
-   - Select your repository
-   - Add MySQL database: "New" → "Database" → "MySQL"
-
-3. **Configure Environment Variables**
-   
-   Add these in Railway dashboard (Variables tab):
-   ```env
-   APP_NAME=MAM Tours
-   APP_ENV=production
-   APP_DEBUG=false
-   # Generate a unique key with `php artisan key:generate --show`; store it only in Railway variables
-   APP_URL=${{RAILWAY_PUBLIC_DOMAIN}}
-   
-   DB_CONNECTION=mysql
-   DB_HOST=${{MYSQL_HOST}}
-   DB_PORT=${{MYSQL_PORT}}
-   DB_DATABASE=${{MYSQL_DATABASE}}
-   DB_USERNAME=${{MYSQL_USER}}
-   DB_PASSWORD=${{MYSQL_PASSWORD}}
-   
-   SESSION_DRIVER=file
-   CACHE_DRIVER=file
-   
-   # Add your payment keys
-   STRIPE_KEY=your_stripe_key
-   STRIPE_SECRET=your_stripe_secret
-   ```
-
-4. **Generate Domain**
-   - Go to Settings → Networking → Generate Domain
-   - Your app will be live at: `https://your-app.railway.app`
-
-For detailed deployment instructions, see `RAILWAY_DEPLOYMENT.md`
-
-## 🔧 Configuration
-
-### Payment Setup
-
-1. **Stripe**: Get API keys from https://stripe.com
-2. **Mobile Money**: Configure provider credentials
-3. Update `.env` with your keys
-
-### Email/SMS Setup
-
-1. **Email**: Configure SMTP settings (Mailgun, SendGrid, etc.)
-2. **SMS**: Set up Twilio or Africa's Talking
-3. Update `.env` with credentials
-
-### Scheduled Tasks
-
-For automated notifications, add to crontab:
-```bash
-* * * * * cd /path-to-project && php artisan schedule:run >> /dev/null 2>&1
-```
-
-## 📁 Project Structure
-
-```
-mam-tours-laravel/
-├── app/
-│   ├── Console/Commands/      # Automated tasks
-│   ├── Http/Controllers/      # Application controllers
-│   ├── Models/                # Database models
-│   └── Services/              # Business logic (Payment, Notifications)
-├── database/
-│   ├── migrations/            # Database schema
-│   └── seeders/               # Sample data
-├── public/                    # Public assets
-├── resources/
-│   ├── css/                   # Stylesheets
-│   ├── js/                    # JavaScript & Vue components
-│   └── views/                 # Blade templates
-├── routes/
-│   └── web.php               # Application routes
-└── tests/                    # Automated tests
-```
-
-## 🎯 Key Routes
-
-- `/` - Home page
-- `/register` - User registration
-- `/login` - User login
-- `/bookings` - Make a booking
-- `/dashboard` - User dashboard
-- `/admin` - Admin dashboard
-- `/admin/kyc` - KYC verification
-- `/payments/{booking}` - Payment page
-
-## 🧪 Testing
-
-The current repository snapshot does not include a test suite. Restore the application source and tests before relying on these commands.
-
-```bash
-# Run all tests
-php artisan test
-
-# Run specific test suite
-php artisan test --testsuite=Feature
-
-# Run with coverage
-php artisan test --coverage
-```
-
-## Admin Account
-
-Do not rely on a shared or default admin password. Create the first administrator using a secure, project-specific setup process, and require a unique password before enabling production access.
-
-## 🔐 Security Features
-
-- CSRF protection
-- XSS prevention
-- SQL injection protection
-- Rate limiting
-- Secure password hashing
-- Two-factor authentication ready
-- Activity logging
-
-## 📞 Support
-
-For issues or questions:
-1. Check `RAILWAY_DEPLOYMENT.md` for deployment help
-2. Review Laravel logs: `storage/logs/laravel.log`
-3. Check Railway logs in dashboard
-
-## 📄 License
-
-This project is proprietary software for MAM Tours.
-
-## 🙏 Credits
-
-Built with:
-- Laravel 8
-- Vue.js 3
-- Tailwind CSS
-- Stripe API
-- MySQL
-
----
-
-**MAM Tours** - Modern Car Rental Management System
+No production environment values, database migrations, live payment credentials, or test results are included in this repository snapshot.
