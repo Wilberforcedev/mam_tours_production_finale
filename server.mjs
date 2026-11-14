@@ -9,6 +9,25 @@ const rootPrefix = `${webRoot}${sep}`;
 const port = Number(process.env.PORT ?? 8000);
 const host = process.env.HOST ?? '0.0.0.0';
 
+const securityHeaders = {
+  'Content-Security-Policy': [
+    "default-src 'self'",
+    "script-src 'self'",
+    "style-src 'self' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' https://images.unsplash.com data:",
+    "connect-src 'self'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "frame-ancestors 'none'",
+    "form-action 'self' mailto:"
+  ].join('; '),
+  'Permissions-Policy': 'camera=(), geolocation=(), microphone=()',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY'
+};
+
 const contentTypes = new Map([
   ['.css', 'text/css; charset=utf-8'],
   ['.html', 'text/html; charset=utf-8'],
@@ -25,11 +44,9 @@ const contentTypes = new Map([
 
 function sendText(response, status, message) {
   response.writeHead(status, {
+    ...securityHeaders,
     'Cache-Control': 'no-store',
-    'Content-Type': 'text/plain; charset=utf-8',
-    'X-Content-Type-Options': 'nosniff',
-    'X-Frame-Options': 'DENY',
-    'Referrer-Policy': 'strict-origin-when-cross-origin'
+    'Content-Type': 'text/plain; charset=utf-8'
   });
   response.end(message);
 }
@@ -74,12 +91,10 @@ async function serveFile(request, response) {
         : 'public, max-age=3600';
 
     response.writeHead(200, {
+      ...securityHeaders,
       'Cache-Control': cacheControl,
       'Content-Length': fileInfo.size,
-      'Content-Type': contentTypes.get(extname(filePath).toLowerCase()) ?? 'application/octet-stream',
-      'Referrer-Policy': 'strict-origin-when-cross-origin',
-      'X-Content-Type-Options': 'nosniff',
-      'X-Frame-Options': 'DENY'
+      'Content-Type': contentTypes.get(extname(filePath).toLowerCase()) ?? 'application/octet-stream'
     });
 
     if (request.method === 'HEAD') {
