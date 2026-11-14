@@ -14,6 +14,40 @@ function showToast(message) {
 // Reapply all active filters whenever the search or saved-trip control changes.
 let showSavedOnly = false;
 
+const tripFilterParams = [
+  ['destinationSelect', 'destination'],
+  ['monthSelect', 'season'],
+  ['styleSelect', 'style']
+];
+
+function restoreTripFiltersFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+
+  tripFilterParams.forEach(([selectId, parameter]) => {
+    const select = document.getElementById(selectId);
+    const value = params.get(parameter);
+    const isValidOption = Array.from(select.options).some((option) => option.value === value);
+
+    if (isValidOption) select.value = value;
+  });
+}
+
+function syncTripFiltersToUrl() {
+  const url = new URL(window.location.href);
+
+  tripFilterParams.forEach(([selectId, parameter]) => {
+    const value = document.getElementById(selectId).value;
+    if (value === 'all') {
+      url.searchParams.delete(parameter);
+    } else {
+      url.searchParams.set(parameter, value);
+    }
+  });
+
+  // Keep unrelated query parameters, such as campaign tags, intact.
+  window.history.replaceState(window.history.state, '', url);
+}
+
 function applyTripFilters() {
   const region = document.getElementById('destinationSelect').value;
   const season = document.getElementById('monthSelect').value;
@@ -54,6 +88,8 @@ function applyTripFilters() {
   } else {
     resultCount.textContent = `Showing ${visibleCount} of ${cards.length} sample journeys`;
   }
+
+  syncTripFiltersToUrl();
 }
 
 document.getElementById('tripSearch').addEventListener('submit', (event) => {
@@ -179,6 +215,7 @@ function updateSavedTripsControl() {
 }
 
 updateSavedTripsControl();
+restoreTripFiltersFromUrl();
 applyTripFilters();
 
 document.getElementById('clearTripSearch').addEventListener('click', () => {
