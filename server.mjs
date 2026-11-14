@@ -9,6 +9,10 @@ const rootPrefix = `${webRoot}${sep}`;
 const port = Number(process.env.PORT ?? 8000);
 const host = process.env.HOST ?? '0.0.0.0';
 
+if (!Number.isInteger(port) || port < 1 || port > 65535) {
+  throw new RangeError(`Invalid port value: ${process.env.PORT}`);
+}
+
 const securityHeaders = {
   'Content-Security-Policy': [
     "default-src 'self'",
@@ -58,11 +62,23 @@ async function serveFile(request, response) {
     return;
   }
 
+  let parsedUrl;
   let requestPath;
   try {
-    requestPath = decodeURIComponent(new URL(request.url ?? '/', 'http://localhost').pathname);
+    parsedUrl = new URL(request.url ?? '/', 'http://localhost');
+    requestPath = decodeURIComponent(parsedUrl.pathname);
   } catch {
     sendText(response, 400, 'Bad request\n');
+    return;
+  }
+
+  if (parsedUrl.pathname === '/healthz') {
+    response.writeHead(200, {
+      ...securityHeaders,
+      'Cache-Control': 'no-store',
+      'Content-Type': 'text/plain; charset=utf-8'
+    });
+    response.end(request.method === 'HEAD' ? undefined : 'ok\n');
     return;
   }
 
@@ -83,10 +99,9 @@ async function serveFile(request, response) {
       return;
     }
 
-    const pathname = new URL(request.url ?? '/', 'http://localhost').pathname;
-    const cacheControl = pathname === '/' || pathname.endsWith('/index.html')
+    const cacheControl = parsedUrl.pathname === '/' || parsedUrl.pathname.endsWith('/index.html')
       ? 'no-cache'
-      : pathname.startsWith('/assets/')
+      : parsedUrl.pathname.startsWith('/assets/')
         ? 'public, max-age=31536000, immutable'
         : 'public, max-age=3600';
 
@@ -123,8 +138,20 @@ const server = createServer((request, response) => {
   });
 });
 
-server.listen(port, host, () => {
-  console.log(`MAM Tours static site listening on ${host}:${port}`);
+async function startServer() {
+  const indexInfo = await stat(resolve(webRoot, 'index.html')).catch(() => null);
+  if (!indexInfo?.isFile()) {
+    throw new Error('Built site not found. Run npm run build before starting the server.');
+  }
+
+  server.listen(port, host, () => {
+    console.log(`MAM Tours static site listening on ${host}:${port}`);
+  });
+}
+
+startServer().catch((error) => {
+  console.error(`MAM Tours server could not start: ${error.message}`);
+  process.exitCode = 1;
 });
 
 // Let Railway finish active responses before stopping the process.
