@@ -11,6 +11,39 @@ function showToast(message) {
   toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
 }
 
+async function copySearchLink() {
+  const searchUrl = window.location.href;
+
+  try {
+    await navigator.clipboard.writeText(searchUrl);
+    showToast('Search link copied.');
+    return;
+  } catch {
+    // Clipboard access may be unavailable outside a secure browser context.
+  }
+
+  const fallbackInput = document.createElement('textarea');
+  fallbackInput.value = searchUrl;
+  fallbackInput.setAttribute('readonly', '');
+  fallbackInput.style.position = 'fixed';
+  fallbackInput.style.opacity = '0';
+  document.body.appendChild(fallbackInput);
+
+  let copied = false;
+  try {
+    fallbackInput.select();
+    copied = document.execCommand('copy');
+  } catch {
+    copied = false;
+  } finally {
+    fallbackInput.remove();
+  }
+
+  showToast(copied ? 'Search link copied.' : 'Copy blocked. Use the link in your address bar.');
+}
+
+document.getElementById('copySearchLink').addEventListener('click', copySearchLink);
+
 // Reapply all active filters whenever the search or saved-trip control changes.
 let showSavedOnly = false;
 
