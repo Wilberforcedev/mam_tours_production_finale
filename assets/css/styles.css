@@ -430,6 +430,12 @@ button,select,input {
   font-weight:700;
   letter-spacing:.08em;
 }
+.copy-fallback {
+  position:fixed;
+  top:0;
+  left:0;
+  opacity:0;
+}
 .heart {
   position:absolute;
   right:12px;
@@ -442,6 +448,9 @@ button,select,input {
   color:#193932;
   font-size:17px;
   cursor:pointer;
+}
+.heart.is-saved {
+  color:#e45e57;
 }
 .tour-info {
   padding:16px;
