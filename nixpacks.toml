@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ['php82', 'nodejs']
+nixPkgs = ['nodejs']
 
 [phases.install]
 cmds = ['npm ci']
@@ -8,4 +8,4 @@ cmds = ['npm ci']
 cmds = ['npm run build']
 
 [start]
-cmd = 'php -S 0.0.0.0:$PORT -t dist'
+cmd = 'npm start'
