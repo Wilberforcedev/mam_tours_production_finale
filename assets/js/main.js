@@ -117,6 +117,20 @@ document.querySelectorAll('.itinerary-trigger').forEach((button) => {
       return item;
     });
     document.getElementById('itineraryStops').replaceChildren(...stops);
+
+    // Include the selected tour in the message opened by the visitor's mail app.
+    const enquiryLink = document.getElementById('itineraryEnquiry');
+    const enquiryDetails = new URLSearchParams({
+      subject: `Enquiry about ${itinerary.title}`,
+      body: [
+        'Hello MAM Tours,',
+        '',
+        `I am interested in ${itinerary.title} (${itinerary.duration}).`,
+        'Please share available dates, inclusions and current pricing.'
+      ].join('\n')
+    });
+    enquiryLink.href = `mailto:hello@mamtours.com?${enquiryDetails.toString()}`;
+
     itineraryDialog.showModal();
   });
 });
