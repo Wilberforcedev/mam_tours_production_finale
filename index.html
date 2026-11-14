@@ -75,12 +75,61 @@ footer{background:#092f2b;color:#d7e3dc;padding:46px 28px 22px}.footer-inner{max
 <footer><div class="footer-inner"><div class="footer-top"><div><a class="brand footer-brand" href="#"><span class="brand-mark">M</span><span>MAM TOURS<small>Go beyond</small></span></a><p class="footer-note">Curated journeys for the curious. Go beyond the expected with MAM Tours.</p></div><div class="footer-links"><div><h4>Explore</h4><a href="#destinations">Destinations</a><a href="#tours">Our journeys</a><a href="#why">Why MAM</a></div><div><h4>We're here</h4><a href="mailto:hello@mamtours.com">Contact us</a><a href="#stories">Travel stories</a><a href="#top">FAQs</a></div><div><h4>Say hello</h4><a href="tel:+18005550149">+1 800 555 0149</a><a href="mailto:hello@mamtours.com">hello@mamtours.com</a></div></div></div><div class="footer-bottom"><span>© 2026 MAM Tours. All rights reserved.</span><span>Privacy &nbsp;·&nbsp; Terms &nbsp;·&nbsp; English (Canada) · CAD $</span></div></div></footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
-const toast=document.getElementById('toast');let toastTimer;function showToast(message){toast.textContent=message;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('show'),2800)}
-document.getElementById('tripSearch').addEventListener('submit',e=>{e.preventDefault();const region=document.getElementById('destinationSelect').value;let visible=0;document.querySelectorAll('.tour-card').forEach(card=>{const show=region==='all'||card.dataset.region===region;card.style.display=show?'':'none';if(show)visible++});document.getElementById('noTrips').style.display=visible?'none':'block';document.getElementById('tours').scrollIntoView({behavior:'smooth'});});
-document.querySelectorAll('.heart').forEach(button=>button.addEventListener('click',()=>{const saved=button.textContent==='♥';button.textContent=saved?'♡':'♥';button.style.color=saved?'#193932':'#e45e57';showToast(saved?'Removed from saved journeys':'Journey saved for later')}));
-document.getElementById('newsletterForm').addEventListener('submit',e=>{e.preventDefault();showToast('Thanks for joining us — look out for a note from MAM Tours!');e.target.reset()});
-document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('navLinks').classList.toggle('open'));
-document.querySelectorAll('.destination').forEach(link=>link.addEventListener('click',()=>{document.getElementById('destinationSelect').value=link.dataset.destination;document.querySelector('#tripSearch button').click()}));
+const toast = document.getElementById("toast");
+let toastTimer;
+
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 2800);
+}
+
+// Filter the tour cards already on the page; this static page does not fetch search results.
+document.getElementById("tripSearch").addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const selectedRegion = document.getElementById("destinationSelect").value;
+  let visibleTours = 0;
+
+  document.querySelectorAll(".tour-card").forEach((card) => {
+    const matchesRegion = selectedRegion === "all" || card.dataset.region === selectedRegion;
+    card.style.display = matchesRegion ? "" : "none";
+    if (matchesRegion) visibleTours += 1;
+  });
+
+  document.getElementById("noTrips").style.display = visibleTours ? "none" : "block";
+  document.getElementById("tours").scrollIntoView({ behavior: "smooth" });
+});
+
+// Toggle the saved icon for this visit and give immediate feedback.
+document.querySelectorAll(".heart").forEach((button) => {
+  button.addEventListener("click", () => {
+    const wasSaved = button.textContent === "♥";
+    button.textContent = wasSaved ? "♡" : "♥";
+    button.style.color = wasSaved ? "#193932" : "#e45e57";
+    showToast(wasSaved ? "Removed from saved journeys" : "Journey saved for later");
+  });
+});
+
+// Keep newsletter feedback local until a subscription service is connected.
+document.getElementById("newsletterForm").addEventListener("submit", (event) => {
+  event.preventDefault();
+  showToast("Thanks for joining us — look out for a note from MAM Tours!");
+  event.target.reset();
+});
+
+document.getElementById("menuToggle").addEventListener("click", () => {
+  document.getElementById("navLinks").classList.toggle("open");
+});
+
+// Destination links reuse the same filter behavior as the main search form.
+document.querySelectorAll(".destination").forEach((link) => {
+  link.addEventListener("click", () => {
+    document.getElementById("destinationSelect").value = link.dataset.destination;
+    document.querySelector("#tripSearch button").click();
+  });
+});
 </script>
 </body>
 </html>
