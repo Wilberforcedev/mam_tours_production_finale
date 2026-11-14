@@ -35,7 +35,18 @@ function applyTripFilters() {
     if (matchesSearch) visibleCount += 1;
   });
 
-  document.getElementById('noTrips').hidden = visibleCount > 0;
+  const emptyState = document.getElementById('noTrips');
+  emptyState.hidden = visibleCount > 0;
+
+  // Explain whether no results come from the current filters or an empty saved list.
+  if (visibleCount === 0 && showSavedOnly && savedJourneys.size === 0) {
+    emptyState.textContent = 'No saved journeys yet. Use the heart on a tour card to save one.';
+  } else if (visibleCount === 0 && showSavedOnly) {
+    emptyState.textContent = 'No saved journeys match these filters. Clear filters or switch off Saved trips.';
+  } else if (visibleCount === 0) {
+    emptyState.textContent = 'No journeys match these filters. Try a different destination, season or travel style.';
+  }
+
   const resultCount = document.getElementById('tripResultCount');
   if (showSavedOnly) {
     const resultLabel = visibleCount === 1 ? 'journey' : 'journeys';
