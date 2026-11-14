@@ -1,6 +1,6 @@
 # MAM Tours
 
-A responsive MAM Tours discovery homepage inspired by modern package-tour storefronts. It presents destination inspiration, sample journeys, a destination filter, saved-trip controls and a newsletter sign-up interaction.
+A responsive MAM Tours discovery homepage for browsing destinations and sample tour packages. It presents destination inspiration, sample journeys, destination, season and travel-style filters, saved-trip controls and a newsletter sign-up interaction.
 
 ## Run locally
 
