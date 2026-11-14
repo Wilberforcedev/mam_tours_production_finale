@@ -1,17 +1,11 @@
 [phases.setup]
-nixPkgs = ['php82', 'php82Extensions.pdo', 'php82Extensions.pdo_mysql', 'php82Extensions.mbstring', 'php82Extensions.xml', 'php82Extensions.curl', 'php82Extensions.zip', 'nodejs']
+nixPkgs = ['php82', 'nodejs']
 
 [phases.install]
-cmds = ['test -f bootstrap/app.php && test -d routes && test -d database/migrations || { echo "Laravel source is incomplete; restore bootstrap/app.php, routes/, and database/migrations/ before deployment."; exit 1; }; composer install --no-dev --optimize-autoloader --no-interaction']
+cmds = ['npm ci']
 
 [phases.build]
-cmds = [
-    'npm ci',
-    'npm run build',
-    'php artisan config:cache',
-    'php artisan route:cache',
-    'php artisan view:cache'
-]
+cmds = ['npm run build']
 
 [start]
-cmd = 'php artisan serve --host=0.0.0.0 --port=$PORT'
+cmd = 'php -S 0.0.0.0:$PORT -t dist'
