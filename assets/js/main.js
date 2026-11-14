@@ -25,8 +25,7 @@ async function copySearchLink() {
   const fallbackInput = document.createElement('textarea');
   fallbackInput.value = searchUrl;
   fallbackInput.setAttribute('readonly', '');
-  fallbackInput.style.position = 'fixed';
-  fallbackInput.style.opacity = '0';
+  fallbackInput.className = 'copy-fallback';
   document.body.appendChild(fallbackInput);
 
   let copied = false;
@@ -235,7 +234,7 @@ function writeSavedJourneys(savedJourneys) {
 function setSavedState(button, isSaved) {
   button.textContent = isSaved ? '♥' : '♡';
   button.setAttribute('aria-pressed', String(isSaved));
-  button.style.color = isSaved ? '#e45e57' : '#193932';
+  button.classList.toggle('is-saved', isSaved);
 }
 
 const savedJourneys = readSavedJourneys();
