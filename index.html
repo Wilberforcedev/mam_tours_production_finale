@@ -27,7 +27,6 @@ footer{background:#092f2b;color:#d7e3dc;padding:46px 28px 22px}.footer-inner{max
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 .saved-trip-tools{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin:-12px 0 18px}.saved-trip-toggle{display:inline-flex;align-items:center;gap:9px;padding:9px 13px;border:1px solid var(--line);border-radius:99px;background:#fff;color:var(--green);font-size:12px;font-weight:700;cursor:pointer}.saved-trip-toggle[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:var(--lime)}.saved-trip-count{min-width:20px;padding:2px 6px;border-radius:99px;background:#eef1e8;text-align:center;color:var(--ink)}.saved-trip-toggle[aria-pressed="true"] .saved-trip-count{background:#ffffff2a;color:var(--lime)}
 .clear-filter-button{border:0;background:transparent;color:var(--muted);padding:8px 10px;font-size:12px;font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer}.clear-filter-button:hover{color:var(--green)}.trip-result-count{margin:0 auto 0 0;color:var(--muted);font-size:12px}.clear-filter-button:focus-visible,.saved-trip-toggle:focus-visible{outline:3px solid #638d36;outline-offset:3px}
-.trip-result-count{margin:0 0 12px;color:var(--muted);font-size:12px;min-height:1em}
 </style>
 </head>
 <body>
@@ -64,13 +63,12 @@ footer{background:#092f2b;color:#d7e3dc;padding:46px 28px 22px}.footer-inner{max
 <!-- Searchable sample itineraries -->
 <section class="section" id="tours"><div class="section-head"><div><p class="section-kicker">Made for curious travellers</p><h2>Journeys to remember</h2><p class="section-intro">Small groups, great local guides and all the important details taken care of.</p></div><a class="arrow-link" href="#tours">See all journeys&nbsp; →</a></div>
 <div class="saved-trip-tools">
-<p class="trip-result-count" id="tripResultCount" aria-live="polite">Showing all 4 sample journeys</p>
+<p class="trip-result-count" id="tripResultCount" aria-live="polite" aria-atomic="true">Showing all 4 sample journeys</p>
 <button class="clear-filter-button" id="clearTripSearch" type="button" aria-controls="tourGrid">Clear filters</button>
 <button class="saved-trip-toggle" id="savedTripsToggle" type="button" aria-pressed="false" aria-controls="tourGrid">
   <span aria-hidden="true">♡</span> Saved trips <span class="saved-trip-count" id="savedTripsCount">0</span>
 </button>
 </div>
-<p class="trip-result-count" id="tripResultCount" aria-live="polite" aria-atomic="true"></p>
 <div class="tour-grid" id="tourGrid">
 <article class="tour-card" data-itinerary-id="savannah-safari" data-region="africa" data-seasons="jul-sep,oct-dec" data-styles="wildlife"><div class="tour-photo"><img loading="lazy" src="https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=82" alt="Elephants roaming in the African savannah"><span class="badge">Guest favourite</span><button class="heart" type="button" data-tour-id="savannah-safari" aria-pressed="false" aria-label="Save Savannah safari">♡</button></div><div class="tour-info"><div class="tour-location">Kenya · Africa</div><h3>Savannahs, safari & the Maasai Mara</h3><div class="tour-meta"><span>◷ 10 days</span><span>✦ Wildlife & nature</span></div><div class="tour-price"><div><span>From per person</span><strong>CA$4,490</strong></div><span class="stars">★★★★★ 4.9</span></div><button class="itinerary-trigger" type="button" data-itinerary-id="savannah-safari" aria-haspopup="dialog">View sample itinerary <span aria-hidden="true">→</span></button></div></article>
 <article class="tour-card" data-itinerary-id="japan-journey" data-region="asia" data-seasons="jan-mar,oct-dec" data-styles="culture,food"><div class="tour-photo"><img loading="lazy" src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=82" alt="Lantern-lit alley in Kyoto"><span class="badge">Limited spots</span><button class="heart" type="button" data-tour-id="japan-journey" aria-pressed="false" aria-label="Save Japan journey">♡</button></div><div class="tour-info"><div class="tour-location">Japan · Asia</div><h3>A taste of Japan: Tokyo, Kyoto & Osaka</h3><div class="tour-meta"><span>◷ 9 days</span><span>✦ Culture & history</span></div><div class="tour-price"><div><span>From per person</span><strong>CA$3,090</strong></div><span class="stars">★★★★★ 4.9</span></div><button class="itinerary-trigger" type="button" data-itinerary-id="japan-journey" aria-haspopup="dialog">View sample itinerary <span aria-hidden="true">→</span></button></div></article>
@@ -152,12 +150,13 @@ function applyTripFilters() {
   });
 
   document.getElementById('noTrips').hidden = visibleCount > 0;
-  const resultLabel = visibleCount === 1 ? 'journey' : 'journeys';
-  const resultMode = showSavedOnly ? 'saved ' : '';
-  document.getElementById('tripResultCount').textContent =
-    `Showing ${visibleCount} ${resultMode}${resultLabel}`;
-  document.getElementById('tripResultCount').textContent =
-    `Showing ${visibleCount} of ${cards.length} sample journeys`;
+  const resultCount = document.getElementById('tripResultCount');
+  if (showSavedOnly) {
+    const resultLabel = visibleCount === 1 ? 'journey' : 'journeys';
+    resultCount.textContent = `Showing ${visibleCount} saved ${resultLabel}`;
+  } else {
+    resultCount.textContent = `Showing ${visibleCount} of ${cards.length} sample journeys`;
+  }
 }
 
 document.getElementById('tripSearch').addEventListener('submit', (event) => {
