@@ -1088,7 +1088,11 @@ footer {
   color:var(--muted);
   font-size:12px;
 }
-.clear-filter-button:focus-visible,.saved-trip-toggle:focus-visible {
+/* Keep keyboard focus visible across navigation, forms and dialog actions. */
+a:focus-visible,
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
   outline:3px solid #638d36;
   outline-offset:3px;
 }
