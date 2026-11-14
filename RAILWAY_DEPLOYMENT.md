@@ -4,7 +4,7 @@ This repository currently deploys a static MAM Tours front-end, built by Vite an
 
 ## Railway
 
-Connect this repository to a Railway service with the Nixpacks builder. The checked-in `nixpacks.toml` installs Node.js and PHP, runs `npm ci`, builds with `npm run build`, and starts PHP's built-in web server on Railway's `PORT`.
+Connect this repository to a Railway service with the Nixpacks builder. The checked-in `nixpacks.toml` installs Node.js, runs `npm ci`, builds with `npm run build`, and starts `server.mjs` through `npm start` on Railway's `PORT`.
 
 No database or payment credentials are required for the current static homepage.
 
@@ -13,7 +13,7 @@ No database or payment credentials are required for the current static homepage.
 ```bash
 npm ci
 npm run build
-PORT=8000 php -S 0.0.0.0:$PORT -t dist
+PORT=8000 npm start
 ```
 
 ## Important project scope
