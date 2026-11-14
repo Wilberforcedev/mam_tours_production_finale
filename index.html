@@ -32,7 +32,7 @@ footer{background:#092f2b;color:#d7e3dc;padding:46px 28px 22px}.footer-inner{max
 <header class="nav-wrap"><nav class="nav" aria-label="Main navigation">
 <a class="brand" href="#" aria-label="MAM Tours home"><span class="brand-mark">M</span><span>MAM TOURS<small>Go beyond</small></span></a>
 <div class="nav-links" id="navLinks"><a href="#destinations">Destinations</a><a href="#tours">Our tours</a><a href="#why">Why MAM</a><a href="#stories">Travel stories</a></div>
-<div class="nav-actions"><a class="phone" href="tel:+18005550149">☎ &nbsp;+1 800 555 0149</a><a class="btn" href="#tours">Find your trip <span>↗</span></a><button class="mobile-toggle" id="menuToggle" aria-label="Open navigation">☰</button></div>
+<div class="nav-actions"><a class="phone" href="tel:+18005550149">☎ &nbsp;+1 800 555 0149</a><a class="btn" href="#tours">Find your trip <span>↗</span></a><button class="mobile-toggle" id="menuToggle" type="button" aria-label="Open navigation" aria-controls="navLinks" aria-expanded="false">☰</button></div>
 </nav></header>
 <main>
 <!-- Hero introduction and trip search -->
@@ -61,10 +61,10 @@ footer{background:#092f2b;color:#d7e3dc;padding:46px 28px 22px}.footer-inner{max
 <!-- Searchable sample itineraries -->
 <section class="section" id="tours"><div class="section-head"><div><p class="section-kicker">Made for curious travellers</p><h2>Journeys to remember</h2><p class="section-intro">Small groups, great local guides and all the important details taken care of.</p></div><a class="arrow-link" href="#tours">See all journeys&nbsp; →</a></div>
 <div class="tour-grid" id="tourGrid">
-<article class="tour-card" data-region="africa" data-seasons="jul-sep,oct-dec" data-styles="wildlife"><div class="tour-photo"><img loading="lazy" src="https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=82" alt="Elephants roaming in the African savannah"><span class="badge">Guest favourite</span><button class="heart" aria-label="Save Savannah safari">♡</button></div><div class="tour-info"><div class="tour-location">Kenya · Africa</div><h3>Savannahs, safari & the Maasai Mara</h3><div class="tour-meta"><span>◷ 10 days</span><span>✦ Wildlife & nature</span></div><div class="tour-price"><div><span>From per person</span><strong>CA$4,490</strong></div><span class="stars">★★★★★ 4.9</span></div></div></article>
-<article class="tour-card" data-region="asia" data-seasons="jan-mar,oct-dec" data-styles="culture,food"><div class="tour-photo"><img loading="lazy" src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=82" alt="Lantern-lit alley in Kyoto"><span class="badge">Limited spots</span><button class="heart" aria-label="Save Japan journey">♡</button></div><div class="tour-info"><div class="tour-location">Japan · Asia</div><h3>A taste of Japan: Tokyo, Kyoto & Osaka</h3><div class="tour-meta"><span>◷ 9 days</span><span>✦ Culture & history</span></div><div class="tour-price"><div><span>From per person</span><strong>CA$3,090</strong></div><span class="stars">★★★★★ 4.9</span></div></div></article>
-<article class="tour-card" data-region="europe" data-seasons="apr-jun,jul-sep" data-styles="culture,food,coast"><div class="tour-photo"><img loading="lazy" src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=800&q=82" alt="Cinque Terre village on the Italian coast"><span class="badge">Save 25%</span><button class="heart" aria-label="Save Italian coast journey">♡</button></div><div class="tour-info"><div class="tour-location">Italy · Europe</div><h3>Italian coastlines & timeless cities</h3><div class="tour-meta"><span>◷ 9 days</span><span>✦ Food & culture</span></div><div class="tour-price"><div><span>From per person</span><strong>CA$2,240</strong></div><span class="stars">★★★★★ 4.8</span></div></div></article>
-<article class="tour-card" data-region="americas" data-seasons="apr-jun,jul-sep" data-styles="culture,wildlife"><div class="tour-photo"><img loading="lazy" src="https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=800&q=82" alt="Machu Picchu and green Andes"><span class="badge">Top pick</span><button class="heart" aria-label="Save Peru adventure">♡</button></div><div class="tour-info"><div class="tour-location">Peru · South America</div><h3>Inca trails & the Sacred Valley</h3><div class="tour-meta"><span>◷ 11 days</span><span>✦ Nature & culture</span></div><div class="tour-price"><div><span>From per person</span><strong>CA$3,480</strong></div><span class="stars">★★★★★ 5.0</span></div></div></article>
+<article class="tour-card" data-region="africa" data-seasons="jul-sep,oct-dec" data-styles="wildlife"><div class="tour-photo"><img loading="lazy" src="https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=82" alt="Elephants roaming in the African savannah"><span class="badge">Guest favourite</span><button class="heart" type="button" data-tour-id="savannah-safari" aria-pressed="false" aria-label="Save Savannah safari">♡</button></div><div class="tour-info"><div class="tour-location">Kenya · Africa</div><h3>Savannahs, safari & the Maasai Mara</h3><div class="tour-meta"><span>◷ 10 days</span><span>✦ Wildlife & nature</span></div><div class="tour-price"><div><span>From per person</span><strong>CA$4,490</strong></div><span class="stars">★★★★★ 4.9</span></div></div></article>
+<article class="tour-card" data-region="asia" data-seasons="jan-mar,oct-dec" data-styles="culture,food"><div class="tour-photo"><img loading="lazy" src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=82" alt="Lantern-lit alley in Kyoto"><span class="badge">Limited spots</span><button class="heart" type="button" data-tour-id="japan-journey" aria-pressed="false" aria-label="Save Japan journey">♡</button></div><div class="tour-info"><div class="tour-location">Japan · Asia</div><h3>A taste of Japan: Tokyo, Kyoto & Osaka</h3><div class="tour-meta"><span>◷ 9 days</span><span>✦ Culture & history</span></div><div class="tour-price"><div><span>From per person</span><strong>CA$3,090</strong></div><span class="stars">★★★★★ 4.9</span></div></div></article>
+<article class="tour-card" data-region="europe" data-seasons="apr-jun,jul-sep" data-styles="culture,food,coast"><div class="tour-photo"><img loading="lazy" src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=800&q=82" alt="Cinque Terre village on the Italian coast"><span class="badge">Save 25%</span><button class="heart" type="button" data-tour-id="italian-coast" aria-pressed="false" aria-label="Save Italian coast journey">♡</button></div><div class="tour-info"><div class="tour-location">Italy · Europe</div><h3>Italian coastlines & timeless cities</h3><div class="tour-meta"><span>◷ 9 days</span><span>✦ Food & culture</span></div><div class="tour-price"><div><span>From per person</span><strong>CA$2,240</strong></div><span class="stars">★★★★★ 4.8</span></div></div></article>
+<article class="tour-card" data-region="americas" data-seasons="apr-jun,jul-sep" data-styles="culture,wildlife"><div class="tour-photo"><img loading="lazy" src="https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=800&q=82" alt="Machu Picchu and green Andes"><span class="badge">Top pick</span><button class="heart" type="button" data-tour-id="peru-adventure" aria-pressed="false" aria-label="Save Peru adventure">♡</button></div><div class="tour-info"><div class="tour-location">Peru · South America</div><h3>Inca trails & the Sacred Valley</h3><div class="tour-meta"><span>◷ 11 days</span><span>✦ Nature & culture</span></div><div class="tour-price"><div><span>From per person</span><strong>CA$3,480</strong></div><span class="stars">★★★★★ 5.0</span></div></div></article>
 <div class="filter-empty" id="noTrips" hidden>No journeys match those filters just yet. Try another destination.</div>
 </div>
 </section>
@@ -122,13 +122,52 @@ document.getElementById('tripSearch').addEventListener('submit', (event) => {
   document.getElementById('tours').scrollIntoView({ behavior: 'smooth' });
 });
 
-// Toggle a journey's saved state and announce the change.
+// Restore saved journeys from this browser without sending data to a server.
+const savedJourneysKey = 'mamTours.savedJourneys';
+
+function readSavedJourneys() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(savedJourneysKey) || '[]');
+    return new Set(Array.isArray(stored) ? stored.filter((id) => typeof id === 'string') : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function writeSavedJourneys(savedJourneys) {
+  try {
+    localStorage.setItem(savedJourneysKey, JSON.stringify([...savedJourneys]));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function setSavedState(button, isSaved) {
+  button.textContent = isSaved ? '♥' : '♡';
+  button.setAttribute('aria-pressed', String(isSaved));
+  button.style.color = isSaved ? '#e45e57' : '#193932';
+}
+
+const savedJourneys = readSavedJourneys();
 document.querySelectorAll('.heart').forEach((button) => {
+  const tourId = button.dataset.tourId;
+  setSavedState(button, savedJourneys.has(tourId));
+
   button.addEventListener('click', () => {
-    const isSaved = button.textContent === '♥';
-    button.textContent = isSaved ? '♡' : '♥';
-    button.style.color = isSaved ? '#193932' : '#e45e57';
-    showToast(isSaved ? 'Removed from saved journeys' : 'Journey saved for later');
+    const shouldSave = !savedJourneys.has(tourId);
+    if (shouldSave) {
+      savedJourneys.add(tourId);
+    } else {
+      savedJourneys.delete(tourId);
+    }
+
+    setSavedState(button, shouldSave);
+    if (!writeSavedJourneys(savedJourneys)) {
+      showToast('Browser storage is unavailable; this choice will not be remembered.');
+      return;
+    }
+    showToast(shouldSave ? 'Journey saved for later' : 'Removed from saved journeys');
   });
 });
 
@@ -140,8 +179,11 @@ document.getElementById('newsletterForm').addEventListener('submit', (event) => 
 });
 
 // Support compact navigation on smaller screens.
-document.getElementById('menuToggle').addEventListener('click', () => {
-  document.getElementById('navLinks').classList.toggle('open');
+document.getElementById('menuToggle').addEventListener('click', (event) => {
+  const navLinks = document.getElementById('navLinks');
+  const isOpen = navLinks.classList.toggle('open');
+  event.currentTarget.setAttribute('aria-expanded', String(isOpen));
+  event.currentTarget.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
 });
 
 // Destination tiles preselect a region and run the same trip-search form.
