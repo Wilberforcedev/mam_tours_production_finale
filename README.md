@@ -4,21 +4,21 @@ A responsive MAM Tours discovery homepage for browsing destinations and sample t
 
 ## Run locally
 
-Requirements: Node.js and PHP 8.2 or later.
+Requirements: Node.js 18 or later.
 
 ```bash
 npm ci
 npm run build
-php -S 127.0.0.1:8000 -t dist
+npm start
 ```
 
-Then open http://127.0.0.1:8000.
+Then open http://127.0.0.1:8000. The Node server listens on port 8000 by default.
 
 The page is a static front-end prototype. Trip names, routes, prices, availability labels and travel-story copy are sample display content, not live offers or verified reviews. Search filters the sample journeys in the browser; newsletter sign-up and saved journeys show local confirmation only. There is no booking, account, payment, customer database, or email integration connected yet.
 
 ## Deploy to Railway
 
-The repository builds the Vite page into `dist/` and serves that directory with PHP's built-in web server. Railway deploys automatically from the connected branch using `nixpacks.toml`.
+The repository builds the Vite page into `dist/` and serves that directory with the Node static-file server. Railway deploys automatically from the connected branch using `nixpacks.toml`.
 
 ## Project status
 
