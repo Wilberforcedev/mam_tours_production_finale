@@ -8,6 +8,8 @@ Connect this repository to a Railway service with the Nixpacks builder. The chec
 
 No database or payment credentials are required for the current static homepage.
 
+Set the Railway service healthcheck path to `/healthz`. The server returns a successful response only after `dist/index.html` is present.
+
 ## Local production-style run
 
 ```bash
