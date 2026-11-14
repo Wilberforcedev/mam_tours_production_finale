@@ -25,6 +25,7 @@ footer{background:#092f2b;color:#d7e3dc;padding:46px 28px 22px}.footer-inner{max
 @media(max-width:980px){.nav{gap:16px}.nav-links{gap:17px}.phone{display:none}.tour-grid{grid-template-columns:repeat(2,1fr)}.destinations{grid-template-columns:1.3fr 1fr 1fr}.destination:last-child{display:none}}
 @media(max-width:700px){.promo{font-size:10px}.nav{height:65px;padding:0 18px}.nav-links{display:none;position:absolute;top:65px;left:0;right:0;padding:18px 22px;background:#fff;box-shadow:0 12px 18px #1232;flex-direction:column;align-items:flex-start}.nav-links.open{display:flex}.nav-actions .btn{display:none}.mobile-toggle{display:block}.hero{padding:0 14px;margin-top:14px}.hero-panel{min-height:500px;background-position:58% center}.hero-copy{padding:54px 25px}.hero h1{font-size:48px}.hero-copy p{font-size:14px}.hero-stamp{width:76px;height:76px;right:17px;top:17px;font-size:8px}.hero-stamp b{font-size:20px}.search-card{width:calc(100% - 28px);margin-top:-24px;padding:12px;grid-template-columns:1fr 1fr}.search-field{padding:7px 9px}.search-field:nth-child(2){border-right:0}.search-card .btn{grid-column:1/-1;margin-top:5px}.section,.deal-banner,.story,.newsletter{padding-left:18px;padding-right:18px;margin-top:68px}.section-head{display:block}.section-head .arrow-link{display:inline-block;margin-top:15px}.destinations{grid-template-columns:1fr 1fr;gap:10px}.destination{min-height:195px}.destination:first-child{grid-column:1/-1;min-height:230px}.destination:last-child{display:block}.destination-info{left:14px;bottom:13px}.destination-info h3{font-size:22px}.deal-inner{grid-template-columns:1fr}.deal-copy{padding:34px 27px}.deal-copy h2{font-size:31px}.deal-image{min-height:220px}.tour-grid{gap:11px}.tour-photo{height:140px}.tour-info{padding:12px}.tour-info h3{font-size:16px;min-height:58px}.tour-meta{font-size:9px;gap:8px}.tour-price strong{font-size:15px}.why{margin-top:70px;padding:55px 0}.why-inner{padding:0 18px}.reasons{grid-template-columns:1fr;gap:23px;margin-top:27px}.reason{padding-top:14px}.story{margin-top:65px}.story-card{grid-template-columns:1fr}.story-image{min-height:230px}.story-copy{padding:29px}.story-copy blockquote{font-size:19px}.newsletter{margin-bottom:60px}.newsletter-box{padding:26px 22px;display:block}.newsletter-form{margin-top:20px;width:100%}.footer-top{display:block}.footer-links{gap:38px;margin-top:28px}.footer-bottom{display:block;line-height:2.2}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+.saved-trip-tools{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin:-12px 0 18px}.saved-trip-toggle{display:inline-flex;align-items:center;gap:9px;padding:9px 13px;border:1px solid var(--line);border-radius:99px;background:#fff;color:var(--green);font-size:12px;font-weight:700;cursor:pointer}.saved-trip-toggle[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:var(--lime)}.saved-trip-count{min-width:20px;padding:2px 6px;border-radius:99px;background:#eef1e8;text-align:center;color:var(--ink)}.saved-trip-toggle[aria-pressed="true"] .saved-trip-count{background:#ffffff2a;color:var(--lime)}
 </style>
 </head>
 <body>
@@ -60,6 +61,11 @@ footer{background:#092f2b;color:#d7e3dc;padding:46px 28px 22px}.footer-inner{max
 <section class="deal-banner"><div class="deal-inner"><div class="deal-copy"><span class="deal-label">A little more time away</span><h2>Peru, in all its wonder.</h2><p>Follow ancient paths from Lima to the Sacred Valley, then watch the sunrise over Machu Picchu.</p><a class="btn" href="#tours">Discover Peru <span>→</span></a></div><div class="deal-image" role="img" aria-label="Beautiful coastline in Greece"></div></div></section>
 <!-- Searchable sample itineraries -->
 <section class="section" id="tours"><div class="section-head"><div><p class="section-kicker">Made for curious travellers</p><h2>Journeys to remember</h2><p class="section-intro">Small groups, great local guides and all the important details taken care of.</p></div><a class="arrow-link" href="#tours">See all journeys&nbsp; →</a></div>
+<div class="saved-trip-tools">
+<button class="saved-trip-toggle" id="savedTripsToggle" type="button" aria-pressed="false" aria-controls="tourGrid">
+  <span aria-hidden="true">♡</span> Saved trips <span class="saved-trip-count" id="savedTripsCount">0</span>
+</button>
+</div>
 <div class="tour-grid" id="tourGrid">
 <article class="tour-card" data-itinerary-id="savannah-safari" data-region="africa" data-seasons="jul-sep,oct-dec" data-styles="wildlife"><div class="tour-photo"><img loading="lazy" src="https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=82" alt="Elephants roaming in the African savannah"><span class="badge">Guest favourite</span><button class="heart" type="button" data-tour-id="savannah-safari" aria-pressed="false" aria-label="Save Savannah safari">♡</button></div><div class="tour-info"><div class="tour-location">Kenya · Africa</div><h3>Savannahs, safari & the Maasai Mara</h3><div class="tour-meta"><span>◷ 10 days</span><span>✦ Wildlife & nature</span></div><div class="tour-price"><div><span>From per person</span><strong>CA$4,490</strong></div><span class="stars">★★★★★ 4.9</span></div><button class="itinerary-trigger" type="button" data-itinerary-id="savannah-safari" aria-haspopup="dialog">View sample itinerary <span aria-hidden="true">→</span></button></div></article>
 <article class="tour-card" data-itinerary-id="japan-journey" data-region="asia" data-seasons="jan-mar,oct-dec" data-styles="culture,food"><div class="tour-photo"><img loading="lazy" src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=82" alt="Lantern-lit alley in Kyoto"><span class="badge">Limited spots</span><button class="heart" type="button" data-tour-id="japan-journey" aria-pressed="false" aria-label="Save Japan journey">♡</button></div><div class="tour-info"><div class="tour-location">Japan · Asia</div><h3>A taste of Japan: Tokyo, Kyoto & Osaka</h3><div class="tour-meta"><span>◷ 9 days</span><span>✦ Culture & history</span></div><div class="tour-price"><div><span>From per person</span><strong>CA$3,090</strong></div><span class="stars">★★★★★ 4.9</span></div><button class="itinerary-trigger" type="button" data-itinerary-id="japan-journey" aria-haspopup="dialog">View sample itinerary <span aria-hidden="true">→</span></button></div></article>
@@ -116,10 +122,10 @@ function showToast(message) {
   toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
 }
 
-// Apply destination, season and travel-style criteria to the sample journeys.
-document.getElementById('tripSearch').addEventListener('submit', (event) => {
-  event.preventDefault();
+// Reapply all active filters whenever the search or saved-trip control changes.
+let showSavedOnly = false;
 
+function applyTripFilters() {
   const region = document.getElementById('destinationSelect').value;
   const season = document.getElementById('monthSelect').value;
   const style = document.getElementById('styleSelect').value;
@@ -133,13 +139,19 @@ document.getElementById('tripSearch').addEventListener('submit', (event) => {
     const matchesRegion = region === 'all' || regions.includes(region);
     const matchesSeason = season === 'all' || seasons.includes(season);
     const matchesStyle = style === 'all' || styles.includes(style);
-    const matchesSearch = matchesRegion && matchesSeason && matchesStyle;
+    const matchesSaved = !showSavedOnly || savedJourneys.has(card.dataset.itineraryId);
+    const matchesSearch = matchesRegion && matchesSeason && matchesStyle && matchesSaved;
 
     card.hidden = !matchesSearch;
     if (matchesSearch) visibleCount += 1;
   });
 
   document.getElementById('noTrips').hidden = visibleCount > 0;
+}
+
+document.getElementById('tripSearch').addEventListener('submit', (event) => {
+  event.preventDefault();
+  applyTripFilters();
   document.getElementById('tours').scrollIntoView({ behavior: 'smooth' });
 });
 
@@ -232,6 +244,21 @@ function setSavedState(button, isSaved) {
 }
 
 const savedJourneys = readSavedJourneys();
+const savedTripsToggle = document.getElementById('savedTripsToggle');
+const savedTripsCount = document.getElementById('savedTripsCount');
+
+function updateSavedTripsControl() {
+  savedTripsCount.textContent = String(savedJourneys.size);
+  savedTripsToggle.setAttribute('aria-pressed', String(showSavedOnly));
+}
+
+updateSavedTripsControl();
+savedTripsToggle.addEventListener('click', () => {
+  showSavedOnly = !showSavedOnly;
+  updateSavedTripsControl();
+  applyTripFilters();
+});
+
 document.querySelectorAll('.heart').forEach((button) => {
   const tourId = button.dataset.tourId;
   setSavedState(button, savedJourneys.has(tourId));
@@ -245,6 +272,8 @@ document.querySelectorAll('.heart').forEach((button) => {
     }
 
     setSavedState(button, shouldSave);
+    updateSavedTripsControl();
+    if (showSavedOnly) applyTripFilters();
     if (!writeSavedJourneys(savedJourneys)) {
       showToast('Browser storage is unavailable; this choice will not be remembered.');
       return;
