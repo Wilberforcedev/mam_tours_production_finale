@@ -970,6 +970,30 @@ footer {
   .tour-price strong {
     font-size:15px;
   }
+  /* Keep the itinerary preview readable on narrow screens. */
+  .itinerary-dialog {
+    max-height:calc(100vh - 24px);
+    max-height:calc(100dvh - 24px);
+  }
+  .dialog-content {
+    padding:22px;
+  }
+  .dialog-content h2 {
+    font-size:25px;
+  }
+  .dialog-route {
+    overflow-wrap:anywhere;
+  }
+  .dialog-footer {
+    align-items:stretch;
+    flex-direction:column;
+  }
+  .dialog-footer p {
+    max-width:none;
+  }
+  .dialog-footer .btn {
+    width:100%;
+  }
   .why {
     margin-top:70px;
     padding:55px 0;
