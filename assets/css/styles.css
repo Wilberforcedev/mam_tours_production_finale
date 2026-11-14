@@ -596,11 +596,6 @@ button,select,input {
   font-size:11px;
   max-width:270px;
 }
-.stars {
-  font-size:11px;
-  color:#a97821;
-  letter-spacing:.03em;
-}
 .filter-empty {
   display:none;
   grid-column:1/-1;

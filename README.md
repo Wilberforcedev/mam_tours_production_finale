@@ -14,7 +14,7 @@ php -S 127.0.0.1:8000 -t dist
 
 Then open http://127.0.0.1:8000.
 
-The page is a static front-end prototype. Search filters the sample journeys in the browser; newsletter sign-up and saved journeys show local confirmation only. There is no booking, account, payment, customer database, or email integration connected yet.
+The page is a static front-end prototype. Trip names, routes, prices, availability labels and travel-story copy are sample display content, not live offers or verified reviews. Search filters the sample journeys in the browser; newsletter sign-up and saved journeys show local confirmation only. There is no booking, account, payment, customer database, or email integration connected yet.
 
 ## Deploy to Railway
 
