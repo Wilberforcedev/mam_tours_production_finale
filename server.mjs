@@ -105,9 +105,40 @@ async function serveFile(request, response) {
         ? 'public, max-age=31536000, immutable'
         : 'public, max-age=3600';
 
+    // Let browsers validate cached files without downloading unchanged content.
+    const etag = `"${fileInfo.size.toString(16)}-${Math.trunc(fileInfo.mtimeMs).toString(16)}"`;
+    const lastModified = fileInfo.mtime.toUTCString();
+    const ifNoneMatch = request.headers['if-none-match'];
+    const ifModifiedSince = request.headers['if-modified-since'];
+    const matchesEtag = typeof ifNoneMatch === 'string'
+      && ifNoneMatch.split(',').some((tag) => {
+        const candidate = tag.trim();
+        return candidate === '*' || candidate === etag || candidate === `W/${etag}`;
+      });
+    const modifiedSince = typeof ifModifiedSince === 'string' ? Date.parse(ifModifiedSince) : Number.NaN;
+    const notModified = typeof ifNoneMatch === 'string'
+      ? matchesEtag
+      : Number.isFinite(modifiedSince)
+        && Math.floor(fileInfo.mtimeMs / 1000) * 1000 <= modifiedSince;
+    const validatorHeaders = {
+      ETag: etag,
+      'Last-Modified': lastModified
+    };
+
+    if (notModified) {
+      response.writeHead(304, {
+        ...securityHeaders,
+        'Cache-Control': cacheControl,
+        ...validatorHeaders
+      });
+      response.end();
+      return;
+    }
+
     response.writeHead(200, {
       ...securityHeaders,
       'Cache-Control': cacheControl,
+      ...validatorHeaders,
       'Content-Length': fileInfo.size,
       'Content-Type': contentTypes.get(extname(filePath).toLowerCase()) ?? 'application/octet-stream'
     });
