@@ -293,33 +293,6 @@ document.getElementById('newsletterForm').addEventListener('submit', (event) => 
   event.target.reset();
 });
 
-// Keep the mobile menu state and its accessibility labels in sync.
-const menuToggle = document.getElementById('menuToggle');
-const navLinks = document.getElementById('navLinks');
-
-function setMobileNavOpen(isOpen) {
-  navLinks.classList.toggle('open', isOpen);
-  menuToggle.setAttribute('aria-expanded', String(isOpen));
-  menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
-}
-
-menuToggle.addEventListener('click', () => {
-  setMobileNavOpen(!navLinks.classList.contains('open'));
-});
-
-// Close the menu after navigation so it does not cover the destination section.
-navLinks.querySelectorAll('a').forEach((link) => {
-  link.addEventListener('click', () => setMobileNavOpen(false));
-});
-
-// Escape closes the open menu and returns keyboard focus to its toggle.
-document.addEventListener('keydown', (event) => {
-  if (event.key !== 'Escape' || !navLinks.classList.contains('open')) return;
-
-  setMobileNavOpen(false);
-  menuToggle.focus();
-});
-
 // Destination tiles preselect a region and run the same trip-search form.
 document.querySelectorAll('.destination').forEach((link) => {
   link.addEventListener('click', () => {

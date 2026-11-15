@@ -1124,3 +1124,30 @@ input:focus-visible {
   outline:3px solid #638d36;
   outline-offset:3px;
 }
+
+/* Shared layouts for the multi-page destination and support sections. */
+.content-page{max-width:1180px;margin:0 auto;padding:54px 28px 80px}
+.content-hero{padding:40px 0 44px;max-width:780px}
+.content-hero h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(38px,6vw,64px);line-height:1.08;margin:8px 0 18px;color:var(--ink)}
+.content-lead{font-size:18px;line-height:1.7;color:var(--muted);max-width:720px}
+.eyebrow,.card-kicker{font-size:11px;letter-spacing:.12em;font-weight:700;color:var(--green)}
+.page-section{margin:16px 0 36px}
+.page-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.info-card,.price-card{display:block;padding:28px;border:1px solid var(--line);border-radius:18px;background:var(--white);color:var(--ink);text-decoration:none}
+.info-card h2,.page-copy h2{font-family:"Playfair Display",Georgia,serif;font-size:28px;margin:12px 0}
+.info-card p,.page-copy p,.page-copy li,.price-card p{color:var(--muted);line-height:1.7}
+.text-link{display:inline-block;margin-top:12px;color:var(--green);font-weight:700;text-decoration:underline;text-underline-offset:4px}
+.info-card:hover{border-color:var(--green);transform:translateY(-2px);transition:transform .2s,border-color .2s}
+.page-copy{max-width:760px}
+.page-copy ul{padding-left:22px}
+.notice{margin:26px 0;padding:22px 26px;border-radius:14px;background:#f1f5e6;color:var(--ink)}
+.notice p{margin:8px 0 0;color:var(--muted);line-height:1.65}
+.faq-list{max-width:850px}
+.faq-list details{padding:20px 4px;border-bottom:1px solid var(--line)}
+.faq-list summary{font-weight:700;color:var(--ink);cursor:pointer}
+.faq-list details p{max-width:720px;color:var(--muted);line-height:1.7}
+.detail-layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(240px,1fr);gap:38px;align-items:start}
+.price-card{position:sticky;top:24px}
+.price-card strong{display:block;margin:16px 0;font-size:24px;color:var(--green)}
+.price-card .text-link{font-size:14px}
+@media(max-width:700px){.content-page{padding:30px 20px 56px}.content-hero{padding:28px 0 30px}.page-grid,.detail-layout{grid-template-columns:1fr}.price-card{position:static}.info-card{padding:22px}}

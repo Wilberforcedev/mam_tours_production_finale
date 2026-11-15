@@ -1,25 +1,25 @@
 # MAM Tours
 
-A responsive MAM Tours discovery homepage for browsing destinations and sample tour packages. It presents destination inspiration, sample journeys, destination, season and travel-style filters, saved-trip controls and a newsletter sign-up interaction.
+A responsive multi-page travel discovery prototype for MAM Tours. Visitors can browse destinations, sample itineraries, featured travel ideas, company information, FAQs and contact details.
+
+## Pages
+- Home: discovery, filters, saved trips and newsletter interaction.
+- Destinations and journeys: sample regions and routes.
+- Featured: selected sample itinerary ideas.
+- About, help and contact: company information, FAQs and contact guidance.
+- Four itinerary detail pages: Kenya, Japan, Italy and Peru.
 
 ## Run locally
-
 Requirements: Node.js 18 or later.
 
-```bash
-npm ci
+```sh
+npm install
+npm run dev
 npm run build
 npm start
 ```
 
-Then open http://127.0.0.1:8000. The Node server listens on port 8000 by default.
+The Node server serves the production build from `dist` and exposes `/healthz`.
 
-The page is a static front-end prototype. Trip names, routes, prices, availability labels and travel-story copy are sample display content, not live offers or verified reviews. Search filters the sample journeys in the browser; newsletter sign-up and saved journeys show local confirmation only. There is no booking, account, payment, customer database, or email integration connected yet.
-
-## Deploy to Railway
-
-The repository builds the Vite page into `dist/` and serves that directory with the Node static-file server. Railway deploys automatically from the connected branch using `nixpacks.toml`.
-
-## Project status
-
-The previous repository snapshot described a Laravel car-rental system, but the Laravel application source directories were not present. The current deployable product is the MAM Tours static homepage. Reintroduce Laravel only when its application source and backend requirements are restored.
+## Prototype limits
+Routes, durations, prices and contact details are demonstration content. This site does not provide live availability, confirmed offers, booking, account creation, payment processing, newsletter delivery or customer support integrations. Replace all sample details with verified business data and connect the required services before accepting customers.
